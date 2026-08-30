@@ -3,443 +3,730 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ELMO X KANI — Log Service AC</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-  :root{
-    --bg: #FFFBEF;
-    --blue-deep: #1E4FA0;
-    --blue: #2E7DD6;
-    --blue-soft: #E8F1FD;
-    --yellow: #FFC93C;
-    --yellow-soft: #FFF3D2;
-    --card: #FFFFFF;
-    --ink: #1C3358;
-    --ink-soft: #5B6E8C;
-    --red: #E5533D;
-    --red-soft: #FDE7E3;
-    --green: #2FA562;
-    --green-soft: #E4F6EA;
-    --line: #E7EDF7;
-  }
-  *{box-sizing:border-box;}
+:root{
+  --bg:#F5FBFF;
+  --kani:#69BFEF;
+  --kani-deep:#2389C9;
+  --kani-soft:#E8F6FF;
+  --yellow:#FFC93C;
+  --yellow-soft:#FFF5D9;
+
+  --card:#FFFFFF;
+  --ink:#23415F;
+  --ink-soft:#66809A;
+
+  --red:#E5533D;
+  --red-soft:#FDE8E4;
+
+  --green:#2FA562;
+  --green-soft:#E6F7ED;
+
+  --line:#DCECF7;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  background-image:
+    radial-gradient(circle at 100% 0%,rgba(105,191,239,.20),transparent 45%),
+    radial-gradient(circle at 0% 100%,rgba(255,201,60,.12),transparent 42%);
+  font-family:'Nunito',sans-serif;
+  color:var(--ink);
+  padding:26px 16px 60px;
+  font-size:15px;
+}
+
+.wrap{
+  max-width:980px;
+  margin:0 auto;
+}
+
+/* HEADER */
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-bottom:22px;
+  background:var(--kani);
+  border-radius:20px;
+  padding:20px 24px;
+  color:white;
+  box-shadow:0 8px 25px rgba(35,137,201,.12);
+}
+
+.brand{
+  margin:0 0 4px;
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--yellow);
+}
+
+h1{
+  font-family:'Baloo 2',sans-serif;
+  font-size:27px;
+  margin:0;
+  color:white;
+}
+
+header p{
+  margin:4px 0 0;
+  font-size:13.5px;
+  color:#F1FAFF;
+}
+
+.today-badge{
+  background:var(--yellow);
+  color:#24658D;
+  font-weight:800;
+  font-size:13px;
+  padding:8px 14px;
+  border-radius:12px;
+  white-space:nowrap;
+}
+
+/* LEGEND */
+
+.legend{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:white;
+  border:2px solid var(--line);
+  border-radius:14px;
+  padding:10px 16px;
+  font-weight:700;
+  font-size:14px;
+}
+
+.dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+}
+
+.dot.overdue{background:var(--red);}
+.dot.soon{background:var(--yellow);}
+.dot.ok{background:var(--green);}
+
+.legend-item .count{
+  font-family:'Baloo 2',sans-serif;
+  font-size:18px;
+}
+
+.legend-item.overdue .count{color:var(--red);}
+.legend-item.soon .count{color:#C98A00;}
+.legend-item.ok .count{color:var(--green);}
+
+/* GROUP */
+
+.group-block{
+  background:white;
+  border-radius:20px;
+  padding:18px 20px;
+  margin-bottom:16px;
+  border:2px solid var(--line);
+}
+
+.group-title{
+  font-family:'Baloo 2',sans-serif;
+  font-size:17px;
+  color:var(--kani-deep);
+  margin:0 0 14px;
+}
+
+/* CARDS */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px;
+}
+
+.card{
+  border-radius:16px;
+  padding:14px 16px;
+  border:2px solid var(--line);
+  background:white;
+  position:relative;
+}
+
+.card.overdue{
+  background:var(--red-soft);
+  border-color:#F6C4BB;
+}
+
+.card.soon{
+  background:var(--yellow-soft);
+  border-color:#FFE096;
+}
+
+.card.ok{
+  background:var(--green-soft);
+  border-color:#BFE8CE;
+}
+
+.unit-name{
+  font-family:'Baloo 2',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  margin:0 0 8px;
+  color:var(--ink);
+}
+
+.status-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-weight:700;
+  font-size:13px;
+  padding:5px 10px;
+  border-radius:20px;
+  margin-bottom:12px;
+}
+
+.status-badge.overdue{
+  background:var(--red);
+  color:white;
+}
+
+.status-badge.soon{
+  background:var(--yellow);
+  color:#7A4E00;
+}
+
+.status-badge.ok{
+  background:var(--green);
+  color:white;
+}
+
+.card .dates{
+  font-size:13px;
+  color:var(--ink-soft);
+  line-height:1.7;
+}
+
+.card .dates b{
+  color:var(--ink);
+  font-weight:700;
+}
+
+/* LOG */
+
+.log-section{
+  margin-top:30px;
+}
+
+.section-title{
+  font-family:'Baloo 2',sans-serif;
+  font-size:19px;
+  color:var(--kani-deep);
+  margin-bottom:12px;
+}
+
+.log-table-wrap{
+  background:white;
+  border:2px solid var(--line);
+  border-radius:18px;
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+  min-width:760px;
+}
+
+th,td{
+  padding:11px 14px;
+  text-align:left;
+  border-bottom:1px solid var(--line);
+}
+
+th{
+  font-family:'Baloo 2',sans-serif;
+  font-size:13px;
+  color:var(--kani-deep);
+  background:var(--kani-soft);
+}
+
+tr:last-child td{
+  border-bottom:none;
+}
+
+td.tag{
+  font-weight:700;
+}
+
+.action-cell{
+  white-space:nowrap;
+}
+
+.action-btn{
+  border:none;
+  border-radius:9px;
+  padding:7px 10px;
+  font-family:'Nunito',sans-serif;
+  font-weight:700;
+  cursor:pointer;
+  margin-right:5px;
+}
+
+.edit-btn{
+  background:var(--kani-soft);
+  color:var(--kani-deep);
+}
+
+.delete-btn{
+  background:var(--red-soft);
+  color:var(--red);
+}
+
+.action-btn:hover{
+  opacity:.8;
+}
+
+/* FORM */
+
+form.add-entry{
+  margin-top:16px;
+  background:white;
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+}
+
+.form-title{
+  font-family:'Baloo 2',sans-serif;
+  font-size:16px;
+  color:var(--kani-deep);
+  margin-bottom:14px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:12px;
+}
+
+.form-grid label{
+  display:block;
+  font-weight:700;
+  font-size:13px;
+  color:var(--ink-soft);
+  margin-bottom:5px;
+}
+
+.form-grid select,
+.form-grid input{
+  width:100%;
+  padding:10px 12px;
+  border:2px solid var(--line);
+  border-radius:10px;
+  font-family:'Nunito',sans-serif;
+  font-size:14px;
+  background:white;
+  color:var(--ink);
+}
+
+.form-grid select:focus,
+.form-grid input:focus{
+  outline:none;
+  border-color:var(--kani);
+}
+
+.form-actions{
+  margin-top:16px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+button.primary{
+  font-family:'Baloo 2',sans-serif;
+  font-weight:700;
+  font-size:15px;
+  padding:11px 24px;
+  border-radius:12px;
+  border:none;
+  background:var(--yellow);
+  color:#24658D;
+  cursor:pointer;
+}
+
+button.primary:hover{
+  background:#FFBD1A;
+}
+
+button.cancel{
+  font-family:'Baloo 2',sans-serif;
+  font-weight:700;
+  font-size:15px;
+  padding:11px 20px;
+  border-radius:12px;
+  border:2px solid var(--line);
+  background:white;
+  color:var(--ink-soft);
+  cursor:pointer;
+}
+
+.hint{
+  font-size:12.5px;
+  color:var(--ink-soft);
+}
+
+/* STATUS */
+
+.sync-status{
+  margin-top:12px;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--green);
+}
+
+footer{
+  margin-top:28px;
+  font-size:12.5px;
+  color:var(--ink-soft);
+  text-align:center;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
   body{
-    margin:0;
-    background:var(--bg);
-    background-image:
-      radial-gradient(circle at 100% 0%, rgba(255,201,60,0.18), transparent 45%),
-      radial-gradient(circle at 0% 100%, rgba(46,125,214,0.10), transparent 42%);
-    font-family:'Nunito', sans-serif;
-    color:var(--ink);
-    padding: 26px 16px 60px;
-    font-size:15px;
+    padding:16px 10px 40px;
   }
-  .wrap{max-width:980px; margin:0 auto;}
 
   header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:14px;
-    margin-bottom:22px;
-    background:var(--blue-deep);
-    border-radius:20px;
-    padding:20px 24px;
-    color:#fff;
-  }
-  h1{
-    font-family:'Baloo 2', sans-serif;
-    font-size:26px;
-    margin:0;
-    color:#fff;
-  }
-  header p{
-    margin:4px 0 0;
-    font-size:13.5px;
-    color:#CFE0FF;
-  }
-  .today-badge{
-    background:var(--yellow);
-    color:var(--blue-deep);
-    font-weight:700;
-    font-size:13px;
-    padding:8px 14px;
-    border-radius:12px;
-    white-space:nowrap;
+    padding:18px;
   }
 
-  .legend{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:22px;
+  h1{
+    font-size:24px;
   }
-  .legend-item{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:var(--card);
-    border:2px solid var(--line);
-    border-radius:14px;
-    padding:10px 16px;
-    font-weight:700;
-    font-size:14px;
-  }
-  .dot{width:12px; height:12px; border-radius:50%;}
-  .dot.overdue{background:var(--red);}
-  .dot.soon{background:var(--yellow);}
-  .dot.ok{background:var(--green);}
-  .legend-item .count{font-family:'Baloo 2', sans-serif; font-size:18px;}
-  .legend-item.overdue .count{color:var(--red);}
-  .legend-item.soon .count{color:#C98A00;}
-  .legend-item.ok .count{color:var(--green);}
 
   .group-block{
-    background:var(--card);
-    border-radius:20px;
-    padding:18px 20px;
-    margin-bottom:16px;
-    border:2px solid var(--line);
-  }
-  .group-title{
-    font-family:'Baloo 2', sans-serif;
-    font-size:17px;
-    color:var(--blue-deep);
-    margin:0 0 14px;
+    padding:15px;
   }
 
   .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-    gap:12px;
+    grid-template-columns:1fr;
   }
-  .card{
-    border-radius:16px;
-    padding:14px 16px;
-    border:2px solid var(--line);
-    background:#fff;
-  }
-  .card.overdue{background:var(--red-soft); border-color:#F6C4BB;}
-  .card.soon{background:var(--yellow-soft); border-color:#FFE096;}
-  .card.ok{background:var(--green-soft); border-color:#BFE8CE;}
-
-  .unit-name{
-    font-family:'Baloo 2', sans-serif;
-    font-weight:700;
-    font-size:16px;
-    margin:0 0 8px;
-    color:var(--ink);
-  }
-  .status-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    font-weight:700;
-    font-size:13px;
-    padding:5px 10px;
-    border-radius:20px;
-    margin-bottom:12px;
-  }
-  .status-badge.overdue{background:var(--red); color:#fff;}
-  .status-badge.soon{background:var(--yellow); color:#7A4E00;}
-  .status-badge.ok{background:var(--green); color:#fff;}
-
-  .card .dates{
-    font-size:13px;
-    color:var(--ink-soft);
-    line-height:1.7;
-  }
-  .card .dates b{color:var(--ink); font-weight:700;}
-
-  .log-section{margin-top:30px;}
-  .section-title{
-    font-family:'Baloo 2', sans-serif;
-    font-size:19px;
-    color:var(--blue-deep);
-    margin-bottom:12px;
-  }
-  .log-table-wrap{
-    background:var(--card);
-    border:2px solid var(--line);
-    border-radius:18px;
-    overflow-x:auto;
-  }
-  table{width:100%; border-collapse:collapse; font-size:14px; min-width:640px;}
-  th, td{
-    padding:11px 14px;
-    text-align:left;
-    border-bottom:1px solid var(--line);
-  }
-  th{
-    font-family:'Baloo 2', sans-serif;
-    font-size:13px;
-    color:var(--blue-deep);
-    background:var(--blue-soft);
-  }
-  th:first-child{border-top-left-radius:14px;}
-  th:last-child{border-top-right-radius:14px;}
-  tr:last-child td{border-bottom:none;}
-  td.tag{
-    font-weight:700;
-  }
-
-  form.add-entry{
-    margin-top:16px;
-    background:var(--card);
-    border:2px solid var(--line);
-    border-radius:18px;
-    padding:20px;
-  }
-  form.add-entry .form-title{
-    font-family:'Baloo 2', sans-serif;
-    font-size:16px;
-    color:var(--blue-deep);
-    margin-bottom:14px;
-  }
-  .form-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(180px,1fr));
-    gap:12px;
-  }
-  .form-grid label{
-    display:block;
-    font-weight:700;
-    font-size:13px;
-    color:var(--ink-soft);
-    margin-bottom:5px;
-  }
-  .form-grid select, .form-grid input{
-    width:100%;
-    padding:10px 12px;
-    border:2px solid var(--line);
-    border-radius:10px;
-    font-family:'Nunito', sans-serif;
-    font-size:14px;
-    background:#fff;
-    color:var(--ink);
-  }
-  .form-grid select:focus, .form-grid input:focus{
-    outline:none;
-    border-color:var(--blue);
-  }
-  .form-actions{margin-top:16px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
-  button{
-    font-family:'Baloo 2', sans-serif;
-    font-weight:700;
-    font-size:15px;
-    padding:11px 24px;
-    border-radius:12px;
-    border:none;
-    background:var(--yellow);
-    color:var(--blue-deep);
-    cursor:pointer;
-  }
-  button:hover{background:#FFBD1A;}
-  .hint{
-    font-size:12.5px;
-    color:var(--ink-soft);
-  }
-  footer{
-    margin-top:28px;
-    font-size:12.5px;
-    color:var(--ink-soft);
-    text-align:center;
-  }
+}
 </style>
 </head>
+
 <body>
+
 <div class="wrap">
-  <header>
-    <div>
-      <p style="margin:0 0 4px; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--yellow);">ELMO X KANI</p>
-      <h1>Log Service AC</h1>
-      <p>Pantau jadwal service tiap unit AC — reminder otomatis tiap 3 bulan</p>
-    </div>
-    <div class="today-badge" id="todayLabel"></div>
-  </header>
 
-  <div class="legend" id="legend"></div>
-
-  <div id="unitGroups"></div>
-
-  <div class="log-section">
-    <div class="section-title">📋 Riwayat Lengkap</div>
-    <div class="log-table-wrap">
-      <table id="logTable">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Tanggal</th>
-            <th>Unit AC</th>
-            <th>Catatan</th>
-          </tr>
-        </thead>
-        <tbody id="logBody"></tbody>
-      </table>
-    </div>
-
-    <form class="add-entry" id="addForm">
-      <div class="form-title">➕ Tambah Catatan Service</div>
-      <div class="form-grid">
-        <div>
-          <label>Tanggal</label>
-          <input type="date" id="inpDate" required>
-        </div>
-        <div>
-          <label>Unit AC</label>
-          <select id="inpUnit" required></select>
-        </div>
-        <div>
-          <label>Catatan (mis. service rutin, freon, perbaikan)</label>
-          <input type="text" id="inpNote" placeholder="service rutin" required>
-        </div>
-      </div>
-      <div class="form-actions">
-        <button type="submit">Simpan Catatan</button>
-        <span class="hint">Tersimpan selama halaman ini terbuka. Untuk simpan permanen, kirim catatan barunya ke Claude ya.</span>
-      </div>
-    </form>
+<header>
+  <div>
+    <p class="brand">ELMO X KANI</p>
+    <h1>Log Service AC</h1>
+    <p>Pantau jadwal service tiap unit AC — reminder otomatis tiap 3 bulan</p>
   </div>
 
-  <footer>Interval reminder: 3 bulan sekali per unit, dihitung dari tanggal service terakhir</footer>
+  <div class="today-badge" id="todayLabel"></div>
+</header>
+
+<div class="legend" id="legend"></div>
+
+<div id="unitGroups"></div>
+
+<div class="log-section">
+
+  <div class="section-title">📋 Riwayat Lengkap</div>
+
+  <div class="log-table-wrap">
+    <table id="logTable">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Tanggal</th>
+          <th>Unit AC</th>
+          <th>Catatan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody id="logBody"></tbody>
+    </table>
+  </div>
+
+  <form class="add-entry" id="addForm">
+
+    <div class="form-title" id="formTitle">
+      ➕ Tambah Catatan Service
+    </div>
+
+    <div class="form-grid">
+
+      <div>
+        <label>Tanggal</label>
+        <input type="date" id="inpDate" required>
+      </div>
+
+      <div>
+        <label>Unit AC</label>
+        <select id="inpUnit" required></select>
+      </div>
+
+      <div>
+        <label>Catatan</label>
+        <input
+          type="text"
+          id="inpNote"
+          placeholder="service rutin"
+          required
+        >
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+
+      <button type="submit" class="primary" id="saveBtn">
+        Simpan Catatan
+      </button>
+
+      <button
+        type="button"
+        class="cancel"
+        id="cancelBtn"
+        style="display:none"
+      >
+        Batal Edit
+      </button>
+
+      <span class="hint">
+        Data tersimpan di komputer ini dan dibackup otomatis ke Google Sheets.
+      </span>
+
+    </div>
+
+    <div class="sync-status" id="syncStatus"></div>
+
+  </form>
+
+</div>
+
+<footer>
+  Interval reminder: 3 bulan sekali per unit, dihitung dari tanggal service terakhir
+</footer>
+
 </div>
 
 <script>
+
+/* =========================================================
+   KONFIGURASI
+========================================================= */
+
 const INTERVAL_MONTHS = 3;
 
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbwO6EeC5COeaH7cBKH3kPblYY9plPi9EJbvmTQLqD0AX-P2DXNHzFRI2amukmenY8VVJA/exec';
+
+const STORAGE_KEY = 'elmo_kani_service_ac_v2';
+
+
+/* =========================================================
+   DATA UNIT
+========================================================= */
+
 const UNITS = [
-  {id:'tbl9', name:'Tbl. 9', group:'AC Split Dining Lt. 1'},
-  {id:'tbl12', name:'Tbl. 12', group:'AC Split Dining Lt. 1'},
-  {id:'tblsofa', name:'Tbl. Sofa', group:'AC Split Dining Lt. 2'},
-  {id:'mushola', name:'Mushola', group:'AC Split Dining Lt. 2'},
-  {id:'standinglt1', name:'Lt. 1', group:'AC Standing'},
-  {id:'standinglt2', name:'Lt. 2', group:'AC Standing'},
-  {id:'dekatpintu', name:'Dekat Pintu', group:'AC Split VIP Room'},
-  {id:'dekatkaca', name:'Dekat Kaca', group:'AC Split VIP Room'},
-  {id:'produksi', name:'AC Produksi', group:'AC Produksi'},
+  {
+    id:'tbl9',
+    name:'Tbl. 9',
+    group:'AC Split Dining Lt. 1'
+  },
+  {
+    id:'tbl12',
+    name:'Tbl. 12',
+    group:'AC Split Dining Lt. 1'
+  },
+  {
+    id:'tblsofa',
+    name:'Tbl. Sofa',
+    group:'AC Split Dining Lt. 2'
+  },
+  {
+    id:'mushola',
+    name:'Mushola',
+    group:'AC Split Dining Lt. 2'
+  },
+  {
+    id:'standinglt1',
+    name:'Lt. 1',
+    group:'AC Standing'
+  },
+  {
+    id:'standinglt2',
+    name:'Lt. 2',
+    group:'AC Standing'
+  },
+  {
+    id:'dekatpintu',
+    name:'Dekat Pintu',
+    group:'AC Split VIP Room'
+  },
+  {
+    id:'dekatkaca',
+    name:'Dekat Kaca',
+    group:'AC Split VIP Room'
+  },
+  {
+    id:'produksi',
+    name:'AC Produksi',
+    group:'AC Produksi'
+  }
 ];
 
-let LOG = [
-  {date:'2026-02-19', unit:'standinglt1', note:'service rutin'},
-  {date:'2026-02-19', unit:'produksi', note:'service rutin'},
-  {date:'2026-03-02', unit:'standinglt1', note:'service rutin'},
-  {date:'2026-03-05', unit:'tblsofa', note:'service rutin'},
-  {date:'2026-03-05', unit:'mushola', note:'service rutin'},
-  {date:'2026-03-05', unit:'standinglt1', note:'service rutin'},
-  {date:'2026-03-05', unit:'standinglt2', note:'service rutin'},
-  {date:'2026-03-05', unit:'dekatpintu', note:'service rutin'},
-  {date:'2026-03-05', unit:'dekatkaca', note:'service rutin'},
-  {date:'2026-03-31', unit:'tbl9', note:'service rutin, perbaikan (pembuangan tersumbat)'},
-  {date:'2026-03-31', unit:'tbl12', note:'service rutin'},
-  {date:'2026-03-31', unit:'standinglt1', note:'perbaikan'},
-  {date:'2026-05-19', unit:'tblsofa', note:'service rutin'},
-  {date:'2026-05-19', unit:'mushola', note:'service rutin'},
-  {date:'2026-05-19', unit:'produksi', note:'service rutin'},
-  {date:'2026-06-16', unit:'produksi', note:'freon'},
+
+/* =========================================================
+   DATA AWAL
+========================================================= */
+
+const INITIAL_LOG = [
+  {
+    date:'2026-02-19',
+    unit:'standinglt1',
+    note:'service rutin'
+  },
+  {
+    date:'2026-02-19',
+    unit:'produksi',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-02',
+    unit:'standinglt1',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-05',
+    unit:'tblsofa',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-05',
+    unit:'mushola',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-05',
+    unit:'standinglt1',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-05',
+    unit:'standinglt2',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-05',
+    unit:'dekatpintu',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-05',
+    unit:'dekatkaca',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-31',
+    unit:'tbl9',
+    note:'service rutin, perbaikan (pembuangan tersumbat)'
+  },
+  {
+    date:'2026-03-31',
+    unit:'tbl12',
+    note:'service rutin'
+  },
+  {
+    date:'2026-03-31',
+    unit:'standinglt1',
+    note:'perbaikan'
+  },
+  {
+    date:'2026-05-19',
+    unit:'tblsofa',
+    note:'service rutin'
+  },
+  {
+    date:'2026-05-19',
+    unit:'mushola',
+    note:'service rutin'
+  },
+  {
+    date:'2026-05-19',
+    unit:'produksi',
+    note:'service rutin'
+  },
+  {
+    date:'2026-06-16',
+    unit:'produksi',
+    note:'freon'
+  }
 ];
 
-function fmtDate(iso){
-  const d = new Date(iso + 'T00:00:00');
-  return d.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'});
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let LOG = [];
+let editingId = null;
+
+
+/* =========================================================
+   ID OTOMATIS
+========================================================= */
+
+function generateId(){
+
+  return 'AC-' +
+    Date.now().toString(36).toUpperCase() +
+    '-' +
+    Math.random()
+      .toString(36)
+      .substring(2,6)
+      .toUpperCase();
+
 }
 
-function addMonths(iso, months){
-  const d = new Date(iso + 'T00:00:00');
-  d.setMonth(d.getMonth() + months);
-  return d;
-}
 
-function lastServiceFor(unitId){
-  const entries = LOG.filter(e => e.unit === unitId).sort((a,b) => a.date.localeCompare(b.date));
-  return entries.length ? entries[entries.length - 1].date : null;
-}
+/* =========================================================
+   STORAGE
+========================================================= */
 
-function statusFor(lastDate){
-  if(!lastDate) return {status:'ok', daysLeft:null, due:null};
-  const due = addMonths(lastDate, INTERVAL_MONTHS);
-  const today = new Date(); today.setHours(0,0,0,0);
-  const diffDays = Math.round((due - today) / 86400000);
-  let status = 'ok';
-  if(diffDays < 0) status = 'overdue';
-  else if(diffDays <= 14) status = 'soon';
-  return {status, daysLeft: diffDays, due};
-}
+function saveLocal(){
 
-function statusLabel(s){
-  if(s.status === 'overdue') return `⚠️ Lewat ${Math.abs(s.daysLeft)} hari`;
-  if(s.status === 'soon') return `⏰ ${s.daysLeft} hari lagi`;
-  if(s.daysLeft !== null) return `✅ Aman, ${s.daysLeft} hari lagi`;
-  return '— Belum ada data';
-}
-
-function render(){
-  const today = new Date();
-  document.getElementById('todayLabel').textContent = today.toLocaleDateString('id-ID', {day:'2-digit', month:'long', year:'numeric'});
-
-  let overdue=0, soon=0, ok=0;
-  UNITS.forEach(u => {
-    const s = statusFor(lastServiceFor(u.id));
-    if(s.status==='overdue') overdue++;
-    else if(s.status==='soon') soon++;
-    else ok++;
-  });
-  document.getElementById('legend').innerHTML = `
-    <div class="legend-item overdue"><span class="dot overdue"></span>Lewat jadwal <span class="count">${overdue}</span></div>
-    <div class="legend-item soon"><span class="dot soon"></span>Segera (≤14 hari) <span class="count">${soon}</span></div>
-    <div class="legend-item ok"><span class="dot ok"></span>Aman <span class="count">${ok}</span></div>
-  `;
-
-  const groups = [...new Set(UNITS.map(u => u.group))];
-  document.getElementById('unitGroups').innerHTML = groups.map(g => {
-    const items = UNITS.filter(u => u.group === g);
-    const cards = items.map(u => {
-      const last = lastServiceFor(u.id);
-      const s = statusFor(last);
-      return `
-        <div class="card ${s.status}">
-          <p class="unit-name">${u.name}</p>
-          <div class="status-badge ${s.status}">${statusLabel(s)}</div>
-          <div class="dates">
-            Terakhir service: <b>${last ? fmtDate(last) : '—'}</b><br>
-            Jadwal berikutnya: <b>${s.due ? fmtDate(s.due.toISOString().slice(0,10)) : '—'}</b>
-          </div>
-        </div>`;
-    }).join('');
-    return `<div class="group-block">
-      <div class="group-title">${g}</div>
-      <div class="grid">${cards}</div>
-    </div>`;
-  }).join('');
-
-  const sorted = [...LOG].sort((a,b) => a.date.localeCompare(b.date));
-  document.getElementById('logBody').innerHTML = sorted.map((e, i) => {
-    const unit = UNITS.find(u => u.id === e.unit);
-    return `<tr>
-      <td>${i+1}</td>
-      <td>${fmtDate(e.date)}</td>
-      <td>${unit ? unit.name + ' — ' + unit.group : e.unit}</td>
-      <td class="tag">${e.note}</td>
-    </tr>`;
-  }).join('');
-
-  document.getElementById('inpUnit').innerHTML = UNITS.map(u => `<option value="${u.id}">${u.name} — ${u.group}</option>`).join('');
-}
-
-document.getElementById('addForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const date = document.getElementById('inpDate').value;
-  const unit = document.getElementById('inpUnit').value;
-  const note = document.getElementById('inpNote').value.trim();
-  if(!date || !unit || !note) return;
-  LOG.push({date, unit, note});
-  this.reset();
-  render();
-});
-
-render();
-</script>
-</body>
-  </html>
-  
+  localStorage
