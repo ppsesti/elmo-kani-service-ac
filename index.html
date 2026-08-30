@@ -452,10 +452,14 @@ let LOG = [];
 let editingId = null;
 
 function generateId(){
-  return 'AC-' +
-    Date.now().toString(36).toUpperCase() +
-    '-' +
-    Math.random().toString(36).substring(2,6).toUpperCase();
+  const key = 'elmoKaniNextId';
+  let nextId = Number(localStorage.getItem(key) || 1);
+
+  const id = 'AC-' + String(nextId).padStart(3, '0');
+
+  localStorage.setItem(key, String(nextId + 1));
+
+  return id;
 }
 
 function createInitialData(){
