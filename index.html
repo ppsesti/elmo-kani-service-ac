@@ -193,6 +193,8 @@ header p{
 }
 
 .log-table-wrap{
+  max-height: 360px;
+  overflow-y: auto;
   background:#fff;
   border:2px solid var(--line);
   border-radius:18px;
@@ -733,10 +735,7 @@ function render(){
       `;
     }).join('');
 
-  const sorted = [...LOG].sort(
-    (a,b) => a.date.localeCompare(b.date)
-  );
-
+ const sorted = [...LOG].sort((a,b) => b.date.localeCompare(a.date));
   document.getElementById('logBody').innerHTML =
     sorted.map((e,index) => {
 
